@@ -15,7 +15,7 @@ type ValidTodo = {
 
 type MakeValidatedTod = ValidTodo | InvalidTodo;
 
-export function makeValidatedTod(description: string): MakeValidatedTod {
+export function makeValidatedTodo(description: string): MakeValidatedTod {
   const cleanDescription = sanitizeStr(description);
   const validatedDescription = validateTodoDescription(cleanDescription);
 

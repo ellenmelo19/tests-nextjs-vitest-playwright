@@ -1,25 +1,26 @@
-import { makeNewTodo } from './make-new-todo'
+import * as sanitizeStrMod from '@/src/utils/sanitize-str';
+import { makeValidatedTodo } from './make-validated-todo';
 
-describe('makeNewTodo (unit)', () => {
-  test('deve retornar um novo todo válido', () => {
-    // AAA -> Arrange, Act, Assert
-    // Arrange -> Criar as coisas que eu preciso
-    const expectedTodo = {
-      id: expect.any(String),
-      description: 'meu novo todo',
-      createdAt: expect.any(String),
-    };
+describe('makeValidatedTodo (unit)', () => {
+  test('deve chamar a função sanitizeStr com o valor correto', () => {
+    // Arrange
+    const description = 'abcd';
+    const sanitizeStrSpy = vi
+      .spyOn(sanitizeStrMod, 'sanitizeStr')
+      .mockReturnValue(description);
 
     // Act
-    const newTodo = makeNewTodo('meu novo todo');
+    makeValidatedTodo(description);
 
     // Assert
-    // toBe ===
-    // toEqual toStrictEqual
-    // Checando apenas a description
-    expect(newTodo.description).toBe(expectedTodo.description);
-
-    // Checando o objeto inteiro
-    expect(newTodo).toStrictEqual(expectedTodo);
+    expect(sanitizeStrSpy).toHaveBeenCalledExactlyOnceWith(description);
+    expect(sanitizeStrSpy).toHaveBeenCalledTimes(1);
+    expect(sanitizeStrSpy).toHaveBeenCalledWith(description);
   });
+
+  // test('deve chamar a validateTodoDescription com o retorno de sanitizeStr', () => {});
+
+  // test('deve chamar makeNewTodo se validatedDescription retornou sucesso', () => {});
+
+  // test('deve chamar retornar validatedDescription.error se a validação falhou', () => {});
 });
