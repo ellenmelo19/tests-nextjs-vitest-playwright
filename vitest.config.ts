@@ -91,9 +91,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // Permite usar @/ como atalho para a pasta src
-      // Exemplo: import Button from '@/components/Button'
-      '@': path.resolve(__dirname, 'src'),
+      // Permite usar @/ como atalho para a raiz do projeto
+      // Exemplo: import Button from '@/src/components/Button'
+      '@': path.resolve(__dirname),
     },
   },
 });
