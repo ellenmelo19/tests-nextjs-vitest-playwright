@@ -8,8 +8,8 @@
 // TENTE SEMPRE USAR A ORDEM INDICADA EM ANOTAÇÕES.
 //
 
-import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Button } from '.';
 
 const VARIANT_DEFAULT_CLASSES = 'bg-blue-600 hover:bg-blue-700 text-blue-100';
@@ -28,9 +28,9 @@ const DISABLED_CLASSES =
 describe('<Button />', () => {
   describe('props padrão e JSX', () => {
     test('deve renderizar o botão com props padrão (apenas com children)', async () => {
-      render(<Button>Enviar formulário</Button>);
+      const { getByRole } = render(<Button>Enviar formulário</Button>);
 
-      const button = screen.getByRole('button', {
+      const button = getByRole('button', {
         name: /enviar formulário/i,
       });
 
@@ -40,13 +40,13 @@ describe('<Button />', () => {
 
     test('verifica se as propriedades padrão do JSX funcionam corretamente', async () => {
       const handleClick = vi.fn();
-      render(
+      const { getByText } = render(
         <Button onClick={handleClick} type='submit' aria-hidden='false'>
           Enviar formulário
         </Button>,
       );
 
-      const button = screen.getByText('Enviar formulário');
+      const button = getByText('Enviar formulário');
 
       await userEvent.click(button);
       await userEvent.click(button);
@@ -59,59 +59,59 @@ describe('<Button />', () => {
 
   describe('variants (cores)', () => {
     test('checa se default aplica a cor correta', async () => {
-      render(
+      const { getByTitle } = render(
         <Button variant='default' title='o botão'>
           Enviar formulário
         </Button>,
       );
 
-      const button = screen.getByTitle(/o botão/i);
+      const button = getByTitle(/o botão/i);
       expect(button).toHaveClass(VARIANT_DEFAULT_CLASSES);
     });
 
     test('checa se danger aplica a cor correta', async () => {
-      render(
+      const { getByTitle } = render(
         <Button variant='danger' title='o botão'>
           Enviar formulário
         </Button>,
       );
 
-      const button = screen.getByTitle(/o botão/i);
+      const button = getByTitle(/o botão/i);
       expect(button).toHaveClass(VARIANT_DANGER_CLASSES);
     });
 
     test('checa se ghost aplica a cor correta', async () => {
-      render(
+      const { getByTitle } = render(
         <Button variant='ghost' title='o botão'>
           Enviar formulário
         </Button>,
       );
 
-      const button = screen.getByTitle(/o botão/i);
+      const button = getByTitle(/o botão/i);
       expect(button).toHaveClass(VARIANT_GHOST_CLASSES);
     });
   });
 
   describe('size (tamanhos)', () => {
     test('tamanho sm deve ser menor', async () => {
-      render(
+      const { getByTestId } = render(
         <Button size='sm' data-testid='qualquer-coisa'>
           Enviar formulário
         </Button>,
       );
 
-      const button = screen.getByTestId(/qualquer-coisa/i);
+      const button = getByTestId(/qualquer-coisa/i);
       expect(button).toHaveClass(SIZE_SM_CLASSES);
     });
 
     test('tamanho md deve ser médio', async () => {
-      render(
+      const { getByTestId } = render(
         <Button size='md' data-testid='qualquer-coisa'>
           Enviar formulário
         </Button>,
       );
 
-      const button = screen.getByTestId(/qualquer-coisa/i);
+      const button = getByTestId(/qualquer-coisa/i);
       expect(button).toHaveClass(SIZE_MD_CLASSES);
     });
 
@@ -130,9 +130,9 @@ describe('<Button />', () => {
 
   describe('disabled', () => {
     test('classes para estado desativado estão corretas', async () => {
-      render(<Button disabled>Enviar formulário</Button>);
+      const { getByRole } = render(<Button disabled>Enviar formulário</Button>);
 
-      const button = screen.getByRole('button', { name: /Enviar formulário/i });
+      const button = getByRole('button', { name: /Enviar formulário/i });
 
       expect(button).toHaveClass(DISABLED_CLASSES);
       expect(button).toBeDisabled();

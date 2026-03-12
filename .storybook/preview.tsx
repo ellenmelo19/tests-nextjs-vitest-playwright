@@ -1,3 +1,4 @@
+import type { Preview } from '@storybook/react';
 import '../src/app/globals.css';
 import './storybook.css';
 
@@ -6,7 +7,7 @@ const preview: Preview = {
     backgrounds: {
       values: [
         // { name: 'dark', value: '#000000' },
-        { name: 'light', value: 'ffffff' },
+        { name: 'light', value: '#ffffff' },
       ],
       default: 'light',
     },

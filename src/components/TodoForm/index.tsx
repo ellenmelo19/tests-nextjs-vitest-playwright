@@ -2,7 +2,7 @@
 import { CreateTodoAction } from '@/src/core/todo/actions/todo.action.types';
 import { sanitizeStr } from '@/src/utils/sanitize-str';
 import { useRef, useState, useTransition } from 'react';
-import { InputText } from '../InputText';
+import { InputText } from '../Button/InputText';
 import { Button } from '../Button';
 import { CirclePlusIcon } from 'lucide-react';
 

@@ -1,6 +1,6 @@
 import { InvalidTodo, ValidTodo } from '@/src/core/todo/schemas/todo.contract';
-import * as createTodoUseCaseMod from '@/src/core/todo/usecases/create-todo.usecase';
-import * as deleteTodoUseCaseMod from '@/src/core/todo/usecases/delete-todo.usecase';
+import * as createTodoUseCaseMod from '@/src/core/todo/usecases/create-todo-usecase';
+import * as deleteTodoUseCaseMod from '@/src/core/todo/usecases/delete-todo-usecase';
 
 import { revalidatePath } from 'next/cache';
 
