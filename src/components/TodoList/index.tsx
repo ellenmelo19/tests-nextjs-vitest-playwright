@@ -1,3 +1,4 @@
+'use client'
 import { DeleteTodoAction } from '@/src/core/todo/actions/todo.action.types';
 import { Todo } from '@/src/core/todo/schemas/todo.contract';
 import { sanitizeStr } from '@/src/utils/sanitize-str';
