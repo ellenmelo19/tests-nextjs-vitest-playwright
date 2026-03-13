@@ -1,4 +1,8 @@
-import { makeTestTodoRepository } from '@/src/core/__tests__/utils/make-test-todo-repository';
+
+import {
+  insertTestTodos,
+  makeTestTodoRepository,
+} from '@/src/core/__tests__/utils/make-test-todo-repository';
 import { test, expect, Page } from '@playwright/test';
 
 const HOME_URL = '/';
@@ -134,7 +138,82 @@ test.describe('<Home /> (E2E)', () => {
 
       await expect(input).toBeEnabled();
     });
+
+    test('deve limpar o input após criar um todo', async ({ page }) => {
+      const { btn, input } = getAll(page);
+      await input.fill(NEW_TODO_TEXT);
+      await btn.click();
+
+      await expect(input).toHaveValue('');
+    });
   });
-  // Exclusão
-  // Erros
+
+  test.describe('Exclusão', () => {
+    test('deve permitir apagar um todo', async ({ page }) => {
+      const todos = await insertTestTodos();
+      await page.reload(); // make next.js revalidate cache
+
+      const itemToDelete = page
+        .getByRole('listitem')
+        .filter({ hasText: todos[1].description });
+      await expect(itemToDelete).toBeVisible();
+
+      const deleteBtn = itemToDelete.getByRole('button');
+      await deleteBtn.click();
+
+      await itemToDelete.waitFor({ state: 'detached' });
+      await expect(itemToDelete).not.toBeVisible();
+    });
+
+    test('deve permitir apagar todos os TODOs', async ({ page }) => {
+      await insertTestTodos();
+      await page.reload(); // make next.js revalidate cache
+
+      while (true) {
+        const item = page.getByRole('listitem').first();
+        const isVisible = await item.isVisible().catch(() => false);
+        if (!isVisible) break;
+
+        const text = await item.textContent();
+        if (!text) {
+          throw Error('Item text not found');
+        }
+
+        const deleteBtn = item.getByRole('button');
+        await deleteBtn.click();
+
+        const renewedItem = page
+          .getByRole('listitem')
+          .filter({ hasText: text });
+        await renewedItem.waitFor({ state: 'detached' });
+        await expect(renewedItem).not.toBeVisible();
+      }
+    });
+
+    test('deve desativar os items da lista enquanto envia a action', async ({
+      page,
+    }) => {
+      //
+    });
+  });
+
+  test.describe('Erros', () => {
+    test('deve mostrar erro se a descrção tem 3 ou menos caracteres', async ({
+      page,
+    }) => {
+      //
+    });
+
+    test('deve mostrar erro se um TODO já existir com a mesma descrição', async ({
+      page,
+    }) => {
+      //
+    });
+
+    test('deve remover o erro da tela quando o usuário corrigir o erro', async ({
+      page,
+    }) => {
+      //
+    });
+  });
 });
